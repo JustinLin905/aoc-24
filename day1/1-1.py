@@ -1,15 +1,12 @@
 import os
 
-# Get the directory where the script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Construct the full path to the file
 file_path = os.path.join(script_dir, "1-1.txt")
 
 nums1 = []
 nums2 = []
 
-# Open 1-1.txt and read first number on each line into nums1 and second number into nums2
 with open(file_path) as f:
     for line in f:
         nums = line.split()
