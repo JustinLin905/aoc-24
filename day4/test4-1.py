@@ -23,5 +23,6 @@ class TestDFS(unittest.TestCase):
         self.assertEqual(res, 2414)
 
 
+# Don't forget this, else no program entry point
 if __name__ == "__main__":
     unittest.main()

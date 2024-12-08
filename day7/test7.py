@@ -13,7 +13,7 @@ class TestDaySeven(unittest.TestCase):
         s = Solution("7.txt")
         res = s.p2()
 
-        self.assertEqual(res, 0)
+        self.assertEqual(res, 354060705047464)
 
 
 if __name__ == "__main__":

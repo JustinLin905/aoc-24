@@ -15,7 +15,7 @@ class Solution:
                 self.target_nums.append(int(line[:colon_index]))
                 self.equations.append(line[colon_index + 1 :].strip().split())
 
-        # print(self.target_nums)
+        print(self.target_nums)
         # print(self.equations)
 
     def p1(self):
