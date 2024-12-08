@@ -7,7 +7,6 @@ class Solution:
         self.file_path = os.path.join(self.script_dir, file_name)
         self.graph = []
         self.start = (-1, -1)
-        self.visited = set()
 
         with open(self.file_path) as f:
             lines = [line.strip() for line in f]
@@ -27,12 +26,21 @@ class Solution:
             # print(self.start)
 
     def patrol(self):
+        """
+        For efficiency in P2: preprocess and create a jump table, which will tell you where the next obstacle is in each position and direction combination
+        """
         r, c = self.start
         dr, dc = -1, 0
+        visited = set()
+        cache = set()
 
         while 0 <= r < len(self.graph) and 0 <= c < len(self.graph[r]):
+            # Check for loop
+            if (r, c, dr, dc) in cache:
+                return -1
+            cache.add((r, c, dr, dc))
+
             nr, nc = r + dr, c + dc
-            # print(f"Checking {nr}, {nc}")
 
             # Next space is an obstacle
             # (-1, 0), (0, 1), (1, 0), (0, -1)
@@ -47,12 +55,29 @@ class Solution:
                 dr = temp
 
                 nr, nc = r + dr, c + dc
-                # print(f"Change dir to {dr}, {dc}. Checking {nr}, {nc}")
 
             # Mark cur as visited and Move space
-            self.visited.add((r, c))
+            visited.add((r, c))
             r, c = nr, nc
-            # print(f"MARKED as visited {r}, {c}")
 
         # Count visited tiles
-        return len(self.visited)
+        return len(visited), visited
+
+    def find_obstacles(self):
+        res = 0
+
+        # First pass: get all tiles that are visited normally. Placing an obstacle at a tile we don't visit normally won't have any effect
+        _, visited = self.patrol()
+
+        # Can't place an obstacle on start
+        visited.remove((self.start[0], self.start[1]))
+
+        for i, j in visited:
+            print(f"Trying to place obstacle at: {i}, {j}")
+            self.graph[i][j] = "#"
+            if self.patrol() == -1:
+                res += 1
+                print(f"Infinite loop with obstacle at: {i}, {j}")
+            self.graph[i][j] = "."
+
+        return res
